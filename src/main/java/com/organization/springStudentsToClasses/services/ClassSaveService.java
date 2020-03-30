@@ -32,7 +32,8 @@ public class ClassSaveService implements IClassRepository {
   }
 
   @Override
-  public ClassWithId update(int id, ClassBase classBase) throws NotFoundException {
+  public ClassWithId update(int id, ClassBase classBase)
+      throws NotFoundException {
     return repository.update(id, classBase);
   }
 

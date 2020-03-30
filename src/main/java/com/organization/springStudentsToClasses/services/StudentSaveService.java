@@ -32,7 +32,8 @@ public class StudentSaveService implements IStudentRepository {
   }
 
   @Override
-  public StudentWithId update(int id, StudentBase studentBase) throws NotFoundException {
+  public StudentWithId update(int id, StudentBase studentBase)
+      throws NotFoundException {
     return repository.update(id, studentBase);
   }
 
