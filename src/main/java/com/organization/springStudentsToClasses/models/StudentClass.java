@@ -4,20 +4,20 @@ import java.util.List;
 
 public final class StudentClass extends StudentWithId {
 
-  private List<ClassWithId> classList;
+  private List<ClassWithId> classes;
 
   public StudentClass(int id, String firstName, String lastName,
-      List<ClassWithId> classList) {
+      List<ClassWithId> classes) {
     super(id, firstName, lastName);
-    this.classList = classList;
+    this.classes = classes;
   }
 
-  public List<ClassWithId> getClassList() {
-    return classList;
+  public List<ClassWithId> getClasses() {
+    return classes;
   }
 
-  public void setClassList(
-      List<ClassWithId> classList) {
-    this.classList = classList;
+  public void setClasses(
+      List<ClassWithId> classes) {
+    this.classes = classes;
   }
 }

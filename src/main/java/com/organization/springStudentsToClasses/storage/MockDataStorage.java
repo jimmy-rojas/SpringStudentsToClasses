@@ -39,7 +39,7 @@ public class MockDataStorage {
       List<StudentWithId> studentList = new ArrayList<>();
       for (int j=0; j<=rand; j++) {
         studentList.add(studentMap.get(j));
-        studentClassMap.get(j).getClassList().add(classWithId);
+        studentClassMap.get(j).getClasses().add(classWithId);
       }
       ClassStudent classStudent = new ClassStudent(classWithId.getId(), classWithId.getCode(),
           classWithId.getTitle(), classWithId.getDescription(), studentList);
