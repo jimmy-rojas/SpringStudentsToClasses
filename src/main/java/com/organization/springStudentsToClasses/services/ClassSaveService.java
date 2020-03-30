@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClassSaveService implements IClassRepository {
 
-  private IClassRepository repository;
+  private final IClassRepository repository;
 
   @Autowired
   public ClassSaveService(IClassRepository repository) {

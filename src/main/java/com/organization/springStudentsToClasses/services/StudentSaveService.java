@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentSaveService implements IStudentRepository {
 
-  private IStudentRepository repository;
+  private final IStudentRepository repository;
 
   @Autowired
   public StudentSaveService(IStudentRepository repository) {
