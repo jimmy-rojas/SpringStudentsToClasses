@@ -9,7 +9,7 @@ public interface IStudentRepository {
 
   List<StudentWithId> getAll();
 
-  StudentWithId save(StudentBase student);
+  StudentWithId save(StudentBase studentBase);
 
   StudentWithId update(int id, StudentBase studentBase) throws NotFoundException;
 
