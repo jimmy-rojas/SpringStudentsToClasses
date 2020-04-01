@@ -40,7 +40,9 @@ public class StudentSaveService implements IStudentRepository {
   public StudentData update(StudentData studentBase)
       throws NotFoundException {
     StudentData studentData = getById(studentBase.getId());
-    return repository.update(studentBase);
+    studentData.setFirstName(studentBase.getFirstName());
+    studentData.setLastName(studentBase.getLastName());
+    return repository.update(studentData);
   }
 
   @Override

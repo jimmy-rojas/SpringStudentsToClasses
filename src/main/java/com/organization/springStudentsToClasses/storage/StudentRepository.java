@@ -33,19 +33,16 @@ public class StudentRepository implements IStudentRepository {
   @Override
   public StudentData save(StudentData student) {
     int newId = storage.counterStudent.incrementAndGet();
-    StudentData studentData = new StudentData(newId, student.getFirstName(),
-        student.getLastName(), new ArrayList<>());
-    storage.getStudentClassMap().put(newId, studentData);
-    return studentData;
+    student.setId(newId);
+    storage.getStudentClassMap().put(newId, student);
+    return student;
   }
 
   @Override
   public StudentData update(StudentData student)
       throws NotFoundException {
-    StudentData studentData = getById(student.getId());
-    studentData.setFirstName(student.getFirstName());
-    studentData.setLastName(student.getLastName());
-    return studentData;
+    storage.getStudentClassMap().put(student.getId(), student);
+    return student;
   }
 
   @Override

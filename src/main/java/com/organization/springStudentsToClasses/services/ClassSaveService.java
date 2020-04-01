@@ -40,7 +40,10 @@ public class ClassSaveService implements IClassRepository {
   public ClassData update(ClassData classBase)
       throws NotFoundException {
     ClassData classData = getById(classBase.getId());
-    return repository.update(classBase);
+    classData.setCode(classBase.getCode());
+    classData.setTitle(classBase.getTitle());
+    classData.setDescription(classBase.getDescription());
+    return repository.update(classData);
   }
 
   @Override

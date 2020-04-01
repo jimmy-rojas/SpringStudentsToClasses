@@ -32,19 +32,15 @@ public class ClassRepository implements IClassRepository {
   @Override
   public ClassData save(ClassData classBase) {
     int newId = storage.counterClass.incrementAndGet();
-    ClassData classData = new ClassData(newId, classBase.getCode(), classBase.getTitle(),
-        classBase.getDescription(), new ArrayList<>());
-    storage.getClassStudentMap().put(newId, classData);
-    return classData;
+    classBase.setId(newId);
+    storage.getClassStudentMap().put(newId, classBase);
+    return classBase;
   }
 
   @Override
   public ClassData update(ClassData classBase) throws NotFoundException {
-    ClassData classData = getById(classBase.getId());
-    classData.setCode(classBase.getCode());
-    classData.setTitle(classBase.getTitle());
-    classData.setDescription(classBase.getDescription());
-    return classData;
+    storage.getClassStudentMap().put(classBase.getId(), classBase);
+    return classBase;
   }
 
   @Override
