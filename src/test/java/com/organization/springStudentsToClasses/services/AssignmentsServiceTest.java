@@ -6,7 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
 import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.models.StudentData;
-import com.organization.springStudentsToClasses.storage.IAssignmentsRepository;
+import com.organization.springStudentsToClasses.storage.IClassRepository;
+import com.organization.springStudentsToClasses.storage.IStudentRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
@@ -15,13 +16,25 @@ import org.junit.Test;
 public class AssignmentsServiceTest {
 
   private AssignmentsService instance;
-  private IAssignmentsRepository repository;
+
+  private IClassRepository classRepository;
+  private IStudentRepository studentRepository;
 
   @Before
   public void setUp() {
-    repository = new IAssignmentsRepository() {
+    classRepository = new IClassRepository() {
       @Override
-      public ClassData getClassStudents(int id) throws NotFoundException {
+      public List<ClassData> getAllSearch(String code, String title, String description) {
+        return new ArrayList<>();
+      }
+
+      @Override
+      public List<ClassData> getAll() {
+        return new ArrayList<>();
+      }
+
+      @Override
+      public ClassData getById(int id) throws NotFoundException {
         if (id > 0) {
           return new ClassData(id, "code", "title", "description",
               new ArrayList<>());
@@ -30,12 +43,34 @@ public class AssignmentsServiceTest {
       }
 
       @Override
-      public List<ClassData> getAllClasses() {
+      public ClassData save(ClassData dataToSave) {
+        return dataToSave;
+      }
+
+      @Override
+      public ClassData update(int id, ClassData dataToUpdate) throws NotFoundException {
+        return dataToUpdate;
+      }
+
+      @Override
+      public void delete(int id) throws NotFoundException {
+
+      }
+    };
+
+    studentRepository = new IStudentRepository() {
+      @Override
+      public List<StudentData> getAllSearch(String firstName, String lastName) {
         return new ArrayList<>();
       }
 
       @Override
-      public StudentData getStudentClasses(int id) throws NotFoundException {
+      public List<StudentData> getAll() {
+        return new ArrayList<>();
+      }
+
+      @Override
+      public StudentData getById(int id) throws NotFoundException {
         if (id > 0) {
           return new StudentData(id,"firstName", "lastName",
               new ArrayList<>());
@@ -44,11 +79,22 @@ public class AssignmentsServiceTest {
       }
 
       @Override
-      public List<StudentData> getAllStudents() {
-        return new ArrayList<>();
+      public StudentData save(StudentData dataToSave) {
+        return dataToSave;
+      }
+
+      @Override
+      public StudentData update(int id, StudentData dataToUpdate) throws NotFoundException {
+        return dataToUpdate;
+      }
+
+      @Override
+      public void delete(int id) throws NotFoundException {
+
       }
     };
-    instance = new AssignmentsService(repository);
+
+    instance = new AssignmentsService(classRepository, studentRepository);
   }
 
   @Test

@@ -18,6 +18,15 @@ public class StudentRepository extends MockDataStorage implements IStudentReposi
   }
 
   @Override
+  public StudentData getById(int id)
+      throws NotFoundException {
+    if (!super.studentMap.containsKey(id)) {
+      throw new NotFoundException("unable to find student");
+    }
+    return super.studentMap.get(id);
+  }
+
+  @Override
   public StudentData save(StudentData student) {
     int newId = super.counterStudent.incrementAndGet();
     StudentData studentData = new StudentData(newId, student.getFirstName(),
@@ -27,11 +36,9 @@ public class StudentRepository extends MockDataStorage implements IStudentReposi
   }
 
   @Override
-  public StudentData update(int studentId, StudentData student) throws NotFoundException {
-    if (!super.studentMap.containsKey(studentId)) {
-      throw new NotFoundException("unable to find student");
-    }
-    StudentData studentData = super.studentMap.get(studentId);
+  public StudentData update(int studentId, StudentData student)
+      throws NotFoundException {
+    StudentData studentData = getById(studentId);
     studentData.setFirstName(student.getFirstName());
     studentData.setLastName(student.getLastName());
     return studentData;
@@ -39,16 +46,14 @@ public class StudentRepository extends MockDataStorage implements IStudentReposi
 
   @Override
   public void delete(int studentId) throws NotFoundException {
-    if (!super.studentMap.containsKey(studentId)) {
-      throw new NotFoundException("unable to find student");
-    }
-    super.studentMap.remove(studentId);
+    StudentData studentData = getById(studentId);
+    super.studentMap.remove(studentData.getId());
   }
 
   @Override
   public List<StudentData> getAllSearch(String firstName, String lastName) {
     return super.studentMap.values()
-        .stream()
+        .parallelStream()
         .filter((student) ->
           student.getFirstName().equalsIgnoreCase(firstName)
               || student.getLastName().equalsIgnoreCase(lastName)

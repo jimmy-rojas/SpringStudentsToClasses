@@ -18,6 +18,14 @@ public class ClassRepository extends MockDataStorage implements IClassRepository
   }
 
   @Override
+  public ClassData getById(int id) throws NotFoundException {
+    if (!super.classMap.containsKey(id)) {
+      throw new NotFoundException("unable to find student");
+    }
+    return super.classMap.get(id);
+  }
+
+  @Override
   public ClassData save(ClassData classBase) {
     int newId = super.counterClass.incrementAndGet();
     ClassData classData = new ClassData(newId, classBase.getCode(), classBase.getTitle(),
@@ -28,10 +36,7 @@ public class ClassRepository extends MockDataStorage implements IClassRepository
 
   @Override
   public ClassData update(int classId, ClassData classBase) throws NotFoundException {
-    if (!super.classMap.containsKey(classId)) {
-      throw new NotFoundException("unable to find student");
-    }
-    ClassData classData = super.classMap.get(classId);
+    ClassData classData = getById(classId);
     classData.setCode(classBase.getCode());
     classData.setTitle(classBase.getTitle());
     classData.setDescription(classBase.getDescription());
@@ -40,16 +45,14 @@ public class ClassRepository extends MockDataStorage implements IClassRepository
 
   @Override
   public void delete(int classId) throws NotFoundException {
-    if (!super.classMap.containsKey(classId)) {
-      throw new NotFoundException("unable to find Class");
-    }
-    super.classMap.remove(classId);
+    ClassData classData = getById(classId);
+    super.classMap.remove(classData.getId());
   }
 
   @Override
   public List<ClassData> getAllSearch(String code, String title, String description) {
     return super.classMap.values()
-        .stream()
+        .parallelStream()
         .filter((classWithId) ->
             classWithId.getCode().equalsIgnoreCase(code)
                 || classWithId.getTitle().equalsIgnoreCase(title)

@@ -26,6 +26,11 @@ public class StudentSaveService implements IStudentRepository {
   }
 
   @Override
+  public StudentData getById(int id) throws NotFoundException {
+    return repository.getById(id);
+  }
+
+  @Override
   public StudentData save(StudentData studentBase) {
     return repository.save(studentBase);
   }

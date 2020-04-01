@@ -35,6 +35,11 @@ public class ClassSaveServiceTest {
       }
 
       @Override
+      public ClassData getById(int id) throws NotFoundException {
+        return null;
+      }
+
+      @Override
       public ClassData save(ClassData classBase) {
         return new ClassData(1, "code", "title", "description", new ArrayList<>());
       }

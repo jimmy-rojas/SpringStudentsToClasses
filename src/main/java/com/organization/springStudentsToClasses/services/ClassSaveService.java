@@ -26,6 +26,11 @@ public class ClassSaveService implements IClassRepository {
   }
 
   @Override
+  public ClassData getById(int id) throws NotFoundException {
+    return repository.getById(id);
+  }
+
+  @Override
   public ClassData save(ClassData classBase) {
     return repository.save(classBase);
   }

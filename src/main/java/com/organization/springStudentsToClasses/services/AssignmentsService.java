@@ -3,7 +3,10 @@ package com.organization.springStudentsToClasses.services;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
 import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.models.StudentData;
-import com.organization.springStudentsToClasses.storage.IAssignmentsRepository;
+import com.organization.springStudentsToClasses.storage.ClassRepository;
+import com.organization.springStudentsToClasses.storage.IClassRepository;
+import com.organization.springStudentsToClasses.storage.IStudentRepository;
+import com.organization.springStudentsToClasses.storage.StudentRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,34 +15,32 @@ import org.springframework.stereotype.Service;
  * AssignmentsService is a service class to manage assignments for Students and Classes
  */
 @Service
-public class AssignmentsService implements IAssignmentsRepository {
+public class AssignmentsService {
 
-  private IAssignmentsRepository repository;
+  private final IClassRepository classRepository;
+  private final IStudentRepository studentRepository;
 
   @Autowired
-  public AssignmentsService(IAssignmentsRepository repository) {
-    this.repository = repository;
+  public AssignmentsService(IClassRepository classRepository, IStudentRepository studentRepository) {
+    this.classRepository = classRepository;
+    this.studentRepository = studentRepository;
   }
 
-  @Override
   public ClassData getClassStudents(int id)
       throws NotFoundException {
-    return this.repository.getClassStudents(id);
+    return this.classRepository.getById(id);
   }
 
-  @Override
   public List<ClassData> getAllClasses() {
-    return this.repository.getAllClasses();
+    return this.classRepository.getAll();
   }
 
-  @Override
   public StudentData getStudentClasses(int id)
       throws NotFoundException {
-    return this.repository.getStudentClasses(id);
+    return this.studentRepository.getById(id);
   }
 
-  @Override
   public List<StudentData> getAllStudents() {
-    return this.repository.getAllStudents();
+    return this.studentRepository.getAll();
   }
 }
