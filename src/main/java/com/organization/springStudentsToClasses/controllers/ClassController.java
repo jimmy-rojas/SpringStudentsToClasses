@@ -2,8 +2,9 @@ package com.organization.springStudentsToClasses.controllers;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import com.organization.springStudentsToClasses.exceptions.InvalidOperationException;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
-import com.organization.springStudentsToClasses.models.ClassBase;
+import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.services.ClassSaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,20 +35,26 @@ public class ClassController {
     return new ResponseEntity(this.service.getAll(), HttpStatus.OK);
   }
 
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{classId}")
+  public ResponseEntity getClassStudents(@PathVariable int classId)
+      throws NotFoundException {
+    return new ResponseEntity(this.service.getById(classId), HttpStatus.OK);
+  }
+
   @RequestMapping(method=POST, value="/")
-  public ResponseEntity createClass(@RequestBody ClassBase classBase) {
+  public ResponseEntity createClass(@RequestBody ClassData classBase) {
     return new ResponseEntity(this.service.getAll(), HttpStatus.OK);
   }
 
   @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
-  public ResponseEntity updateClass(@PathVariable int id, @RequestBody ClassBase classBase)
+  public ResponseEntity updateClass(@PathVariable int id, @RequestBody ClassData classBase)
       throws NotFoundException {
-    return new ResponseEntity(this.service.update(id, classBase), HttpStatus.OK);
+    return new ResponseEntity(this.service.update(classBase), HttpStatus.OK);
   }
 
   @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
   public ResponseEntity deleteClass(@PathVariable int id)
-      throws NotFoundException {
+      throws NotFoundException, InvalidOperationException {
     this.service.delete(id);
     return new ResponseEntity(HttpStatus.OK);
   }
