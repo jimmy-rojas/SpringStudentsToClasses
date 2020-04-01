@@ -8,18 +8,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("singleton")
 public class MockDataStorage {
 
-  protected static Map<Integer, StudentData> studentMap = new HashMap<>();
-  protected static Map<Integer, ClassData> classMap = new HashMap<>();
-  protected static Map<Integer, ClassData> classStudentMap = new HashMap<>();
-  protected static Map<Integer, StudentData> studentClassMap = new HashMap<>();
+  private static Map<Integer, ClassData> classStudentMap = new HashMap<>();
+  private static Map<Integer, StudentData> studentClassMap = new HashMap<>();
 
-  protected static final AtomicInteger counterStudent = new AtomicInteger();
-  protected static final AtomicInteger counterClass = new AtomicInteger();
+  public static final AtomicInteger counterStudent = new AtomicInteger();
+  public static final AtomicInteger counterClass = new AtomicInteger();
 
   {
+    Map<Integer, StudentData> studentMap = new HashMap<>();
+    Map<Integer, ClassData> classMap = new HashMap<>();
+
     for (int i=0; i<5; i++) {
       StudentData studentData = new StudentData(i,"firstName-"+i, "lastName-"+i, new ArrayList<>());
       studentMap.put(i, studentData);
@@ -45,4 +50,11 @@ public class MockDataStorage {
     }
   }
 
+  public Map<Integer, ClassData> getClassStudentMap() {
+    return classStudentMap;
+  }
+
+  public Map<Integer, StudentData> getStudentClassMap() {
+    return studentClassMap;
+  }
 }

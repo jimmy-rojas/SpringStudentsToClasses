@@ -5,32 +5,36 @@ import com.organization.springStudentsToClasses.models.ClassData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @Profile("default")
-public class ClassRepository extends MockDataStorage implements IClassRepository {
+public class ClassRepository implements IClassRepository {
+
+  @Autowired
+  private MockDataStorage storage;
 
   @Override
   public List<ClassData> getAll() {
-    return new ArrayList<ClassData>(super.classMap.values());
+    return new ArrayList<ClassData>(storage.getClassStudentMap().values());
   }
 
   @Override
   public ClassData getById(int id) throws NotFoundException {
-    if (!super.classMap.containsKey(id)) {
+    if (!storage.getClassStudentMap().containsKey(id)) {
       throw new NotFoundException("unable to find student");
     }
-    return super.classMap.get(id);
+    return storage.getClassStudentMap().get(id);
   }
 
   @Override
   public ClassData save(ClassData classBase) {
-    int newId = super.counterClass.incrementAndGet();
+    int newId = storage.counterClass.incrementAndGet();
     ClassData classData = new ClassData(newId, classBase.getCode(), classBase.getTitle(),
         classBase.getDescription(), new ArrayList<>());
-    super.classMap.put(newId, classData);
+    storage.getClassStudentMap().put(newId, classData);
     return classData;
   }
 
@@ -46,13 +50,13 @@ public class ClassRepository extends MockDataStorage implements IClassRepository
   @Override
   public void delete(int classId) throws NotFoundException {
     ClassData classData = getById(classId);
-    super.classMap.remove(classData.getId());
+    storage.getClassStudentMap().remove(classData.getId());
   }
 
   @Override
   public List<ClassData> getAllSearch(String code, String title, String description) {
-    return super.classMap.values()
-        .parallelStream()
+    return storage.getClassStudentMap().values()
+        .stream()
         .filter((classWithId) ->
             classWithId.getCode().equalsIgnoreCase(code)
                 || classWithId.getTitle().equalsIgnoreCase(title)
