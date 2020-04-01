@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
-import com.organization.springStudentsToClasses.models.ClassStudent;
-import com.organization.springStudentsToClasses.models.StudentClass;
+import com.organization.springStudentsToClasses.models.ClassData;
+import com.organization.springStudentsToClasses.models.StudentData;
 import com.organization.springStudentsToClasses.storage.IAssignmentsRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,30 +21,30 @@ public class AssignmentsServiceTest {
   public void setUp() {
     repository = new IAssignmentsRepository() {
       @Override
-      public ClassStudent getClassStudents(int id) throws NotFoundException {
+      public ClassData getClassStudents(int id) throws NotFoundException {
         if (id > 0) {
-          return new ClassStudent(id, "code", "title", "description",
+          return new ClassData(id, "code", "title", "description",
               new ArrayList<>());
         }
         throw new NotFoundException("Not Found");
       }
 
       @Override
-      public List<ClassStudent> getAllClasses() {
+      public List<ClassData> getAllClasses() {
         return new ArrayList<>();
       }
 
       @Override
-      public StudentClass getStudentClasses(int id) throws NotFoundException {
+      public StudentData getStudentClasses(int id) throws NotFoundException {
         if (id > 0) {
-          return new StudentClass(id,"firstName", "lastName",
+          return new StudentData(id,"firstName", "lastName",
               new ArrayList<>());
         }
         throw new NotFoundException("Not Found");
       }
 
       @Override
-      public List<StudentClass> getAllStudents() {
+      public List<StudentData> getAllStudents() {
         return new ArrayList<>();
       }
     };
@@ -53,7 +53,7 @@ public class AssignmentsServiceTest {
 
   @Test
   public void getAllStudents() throws Exception {
-    List<StudentClass> allStudentsList = instance.getAllStudents();
+    List<StudentData> allStudentsList = instance.getAllStudents();
     assertNotNull(allStudentsList);
     assertEquals(0, allStudentsList.size());
   }
@@ -65,14 +65,14 @@ public class AssignmentsServiceTest {
 
   @Test
   public void getStudentClasses() throws Exception {
-    StudentClass studentClasses = instance.getStudentClasses(1);
+    StudentData studentClasses = instance.getStudentClasses(1);
     assertNotNull(studentClasses);
     assertEquals(1, studentClasses.getId());
   }
 
   @Test
   public void getAllClasses() throws Exception {
-    List<ClassStudent> allClassesList = instance.getAllClasses();
+    List<ClassData> allClassesList = instance.getAllClasses();
     assertNotNull(allClassesList);
     assertEquals(0, allClassesList.size());
   }
@@ -84,7 +84,7 @@ public class AssignmentsServiceTest {
 
   @Test
   public void getClassStudents() throws Exception {
-    ClassStudent classStudents = instance.getClassStudents(1);
+    ClassData classStudents = instance.getClassStudents(1);
     assertNotNull(classStudents);
     assertEquals(1, classStudents.getId());
   }

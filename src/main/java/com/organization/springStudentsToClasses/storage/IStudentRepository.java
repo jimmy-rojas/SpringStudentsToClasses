@@ -1,10 +1,9 @@
 package com.organization.springStudentsToClasses.storage;
 
-import com.organization.springStudentsToClasses.models.StudentBase;
-import com.organization.springStudentsToClasses.models.StudentWithId;
+import com.organization.springStudentsToClasses.models.StudentData;
 import java.util.List;
 
-public interface IStudentRepository extends IRepository<StudentBase, StudentWithId> {
+public interface IStudentRepository extends IRepository<StudentData> {
 
-  List<StudentWithId> getAllSearch(String firstName, String lastName);
+  List<StudentData> getAllSearch(String firstName, String lastName);
 }

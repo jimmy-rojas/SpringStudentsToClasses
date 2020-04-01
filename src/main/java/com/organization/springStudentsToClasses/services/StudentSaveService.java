@@ -1,8 +1,7 @@
 package com.organization.springStudentsToClasses.services;
 
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
-import com.organization.springStudentsToClasses.models.StudentBase;
-import com.organization.springStudentsToClasses.models.StudentWithId;
+import com.organization.springStudentsToClasses.models.StudentData;
 import com.organization.springStudentsToClasses.storage.IStudentRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +21,17 @@ public class StudentSaveService implements IStudentRepository {
   }
 
   @Override
-  public List<StudentWithId> getAll() {
+  public List<StudentData> getAll() {
     return repository.getAll();
   }
 
   @Override
-  public StudentWithId save(StudentBase studentBase) {
+  public StudentData save(StudentData studentBase) {
     return repository.save(studentBase);
   }
 
   @Override
-  public StudentWithId update(int id, StudentBase studentBase)
+  public StudentData update(int id, StudentData studentBase)
       throws NotFoundException {
     return repository.update(id, studentBase);
   }
@@ -43,7 +42,7 @@ public class StudentSaveService implements IStudentRepository {
   }
 
   @Override
-  public List<StudentWithId> getAllSearch(String firstName, String lastName) {
+  public List<StudentData> getAllSearch(String firstName, String lastName) {
     return repository.getAllSearch(firstName, lastName);
   }
 }

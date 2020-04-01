@@ -1,8 +1,8 @@
 package com.organization.springStudentsToClasses.services;
 
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
-import com.organization.springStudentsToClasses.models.ClassStudent;
-import com.organization.springStudentsToClasses.models.StudentClass;
+import com.organization.springStudentsToClasses.models.ClassData;
+import com.organization.springStudentsToClasses.models.StudentData;
 import com.organization.springStudentsToClasses.storage.IAssignmentsRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,24 +22,24 @@ public class AssignmentsService implements IAssignmentsRepository {
   }
 
   @Override
-  public ClassStudent getClassStudents(int id)
+  public ClassData getClassStudents(int id)
       throws NotFoundException {
     return this.repository.getClassStudents(id);
   }
 
   @Override
-  public List<ClassStudent> getAllClasses() {
+  public List<ClassData> getAllClasses() {
     return this.repository.getAllClasses();
   }
 
   @Override
-  public StudentClass getStudentClasses(int id)
+  public StudentData getStudentClasses(int id)
       throws NotFoundException {
     return this.repository.getStudentClasses(id);
   }
 
   @Override
-  public List<StudentClass> getAllStudents() {
+  public List<StudentData> getAllStudents() {
     return this.repository.getAllStudents();
   }
 }

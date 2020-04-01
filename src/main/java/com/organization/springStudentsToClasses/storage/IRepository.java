@@ -3,13 +3,13 @@ package com.organization.springStudentsToClasses.storage;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
 import java.util.List;
 
-public interface IRepository<U, T> {
+public interface IRepository<T> {
 
   List<T> getAll();
 
-  T save(U dataToSave);
+  T save(T dataToSave);
 
-  T update(int id, U dataToUpdate) throws NotFoundException;
+  T update(int id, T dataToUpdate) throws NotFoundException;
 
   void delete(int id) throws NotFoundException;
 

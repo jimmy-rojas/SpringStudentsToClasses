@@ -4,9 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
-import com.organization.springStudentsToClasses.models.ClassBase;
-import com.organization.springStudentsToClasses.models.ClassWithId;
-import com.organization.springStudentsToClasses.models.StudentWithId;
+import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.storage.IClassRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,34 +16,34 @@ public class ClassSaveServiceTest {
 
   private ClassSaveService instance;
   private IClassRepository classRepository;
-  private ClassBase classBase;
+  private ClassData classBase;
 
   @Before
   public void setUp() {
-    classBase = new ClassBase("code", "title", "description");
+    classBase = new ClassData(1, "code", "title", "description", new ArrayList<>());
     classRepository = new IClassRepository() {
       @Override
-      public List<ClassWithId> getAllSearch(String code, String title, String description) {
-        List<ClassWithId> data = new ArrayList<>();
-        data.add(new ClassWithId(1, code, title, description));
+      public List<ClassData> getAllSearch(String code, String title, String description) {
+        List<ClassData> data = new ArrayList<>();
+        data.add(new ClassData(1, code, title, description, new ArrayList<>()));
         return data;
       }
 
       @Override
-      public List<ClassWithId> getAll() {
+      public List<ClassData> getAll() {
         return new ArrayList<>();
       }
 
       @Override
-      public ClassWithId save(ClassBase classBase) {
-        return new ClassWithId(1, "code", "title", "description");
+      public ClassData save(ClassData classBase) {
+        return new ClassData(1, "code", "title", "description", new ArrayList<>());
       }
 
       @Override
-      public ClassWithId update(int id, ClassBase classBase) throws NotFoundException {
+      public ClassData update(int id, ClassData classBase) throws NotFoundException {
         if (id > 0) {
-          return new ClassWithId(id, classBase.getCode(), classBase.getTitle(),
-              classBase.getDescription());
+          return new ClassData(id, classBase.getCode(), classBase.getTitle(),
+              classBase.getDescription(), new ArrayList<>());
         }
         throw new NotFoundException("Not Found");
       }
@@ -62,21 +60,21 @@ public class ClassSaveServiceTest {
 
   @Test
   public void testGetAll() {
-    List<ClassWithId> allClasses = instance.getAll();
+    List<ClassData> allClasses = instance.getAll();
     assertNotNull(allClasses);
     assertEquals(0, allClasses.size());
   }
 
   @Test
   public void getAllSearch() throws Exception {
-    List<ClassWithId> allClasses = instance.getAllSearch("code", "title", "description");
+    List<ClassData> allClasses = instance.getAllSearch("code", "title", "description");
     assertNotNull(allClasses);
     Assert.assertEquals(1, allClasses.size());
   }
 
   @Test
   public void testCreate() {
-    ClassWithId classSaved = instance.save(classBase);
+    ClassData classSaved = instance.save(classBase);
     assertNotNull(classSaved);
     assertEquals(1, classSaved.getId());
   }
@@ -88,7 +86,7 @@ public class ClassSaveServiceTest {
 
   @Test
   public void testUpdate() throws Exception {
-    ClassWithId classUpdated = instance.update(1, classBase);
+    ClassData classUpdated = instance.update(1, classBase);
     assertNotNull(classUpdated);
     assertEquals(1, classUpdated.getId());
   }

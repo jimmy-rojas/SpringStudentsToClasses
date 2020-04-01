@@ -1,17 +1,17 @@
 package com.organization.springStudentsToClasses.storage;
 
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
-import com.organization.springStudentsToClasses.models.ClassStudent;
-import com.organization.springStudentsToClasses.models.StudentClass;
+import com.organization.springStudentsToClasses.models.ClassData;
+import com.organization.springStudentsToClasses.models.StudentData;
 import java.util.List;
 
 public interface IAssignmentsRepository {
 
-  ClassStudent getClassStudents(int id) throws NotFoundException;
+  ClassData getClassStudents(int id) throws NotFoundException;
 
-  List<ClassStudent> getAllClasses();
+  List<ClassData> getAllClasses();
 
-  StudentClass getStudentClasses(int id) throws NotFoundException;
+  StudentData getStudentClasses(int id) throws NotFoundException;
 
-  List<StudentClass> getAllStudents();
+  List<StudentData> getAllStudents();
 }

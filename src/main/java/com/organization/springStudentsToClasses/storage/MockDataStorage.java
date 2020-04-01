@@ -1,9 +1,7 @@
 package com.organization.springStudentsToClasses.storage;
 
-import com.organization.springStudentsToClasses.models.ClassStudent;
-import com.organization.springStudentsToClasses.models.ClassWithId;
-import com.organization.springStudentsToClasses.models.StudentClass;
-import com.organization.springStudentsToClasses.models.StudentWithId;
+import com.organization.springStudentsToClasses.models.ClassData;
+import com.organization.springStudentsToClasses.models.StudentData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,36 +11,36 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MockDataStorage {
 
-  protected static Map<Integer, StudentWithId> studentMap = new HashMap<>();
-  protected static Map<Integer, ClassWithId> classMap = new HashMap<>();
-  protected static Map<Integer, ClassStudent> classStudentMap = new HashMap<>();
-  protected static Map<Integer, StudentClass> studentClassMap = new HashMap<>();
+  protected static Map<Integer, StudentData> studentMap = new HashMap<>();
+  protected static Map<Integer, ClassData> classMap = new HashMap<>();
+  protected static Map<Integer, ClassData> classStudentMap = new HashMap<>();
+  protected static Map<Integer, StudentData> studentClassMap = new HashMap<>();
 
   protected static final AtomicInteger counterStudent = new AtomicInteger();
   protected static final AtomicInteger counterClass = new AtomicInteger();
 
   {
     for (int i=0; i<5; i++) {
-      StudentWithId studentWithId = new StudentWithId(i,"firstName-"+i, "lastName-"+i);
-      studentMap.put(i, studentWithId);
+      StudentData studentData = new StudentData(i,"firstName-"+i, "lastName-"+i, new ArrayList<>());
+      studentMap.put(i, studentData);
       counterStudent.incrementAndGet();
 
-      StudentClass studentClass = new StudentClass(studentWithId.getId(),
-          studentWithId.getFirstName(), studentWithId.getLastName(), new ArrayList<>());
+      StudentData studentClass = new StudentData(studentData.getId(),
+          studentData.getFirstName(), studentData.getLastName(), new ArrayList<>());
       studentClassMap.put(i, studentClass);
     }
     for (int i=0; i<3; i++) {
-      ClassWithId classWithId = new ClassWithId(i,"code-"+i, "title-"+i, "description-"+i);
-      classMap.put(i, classWithId);
+      ClassData classData = new ClassData(i,"code-"+i, "title-"+i, "description-"+i, new ArrayList<>());
+      classMap.put(i, classData);
       counterClass.incrementAndGet();
       int rand = new Random().nextInt(studentMap.size());
-      List<StudentWithId> studentList = new ArrayList<>();
+      List<StudentData> studentList = new ArrayList<>();
       for (int j=0; j<=rand; j++) {
         studentList.add(studentMap.get(j));
-        studentClassMap.get(j).getClasses().add(classWithId);
+        studentClassMap.get(j).getClasses().add(classData);
       }
-      ClassStudent classStudent = new ClassStudent(classWithId.getId(), classWithId.getCode(),
-          classWithId.getTitle(), classWithId.getDescription(), studentList);
+      ClassData classStudent = new ClassData(classData.getId(), classData.getCode(),
+          classData.getTitle(), classData.getDescription(), studentList);
       classStudentMap.put(i, classStudent);
     }
   }

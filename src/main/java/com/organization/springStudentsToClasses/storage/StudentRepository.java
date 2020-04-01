@@ -1,8 +1,7 @@
 package com.organization.springStudentsToClasses.storage;
 
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
-import com.organization.springStudentsToClasses.models.StudentBase;
-import com.organization.springStudentsToClasses.models.StudentWithId;
+import com.organization.springStudentsToClasses.models.StudentData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,28 +13,28 @@ import org.springframework.stereotype.Repository;
 public class StudentRepository extends MockDataStorage implements IStudentRepository {
 
   @Override
-  public List<StudentWithId> getAll() {
-    return new ArrayList<StudentWithId>(super.studentMap.values());
+  public List<StudentData> getAll() {
+    return new ArrayList<StudentData>(super.studentMap.values());
   }
 
   @Override
-  public StudentWithId save(StudentBase student) {
+  public StudentData save(StudentData student) {
     int newId = super.counterStudent.incrementAndGet();
-    StudentWithId studentWithId = new StudentWithId(newId, student.getFirstName(),
-        student.getLastName());
-    super.studentMap.put(newId, studentWithId);
-    return studentWithId;
+    StudentData studentData = new StudentData(newId, student.getFirstName(),
+        student.getLastName(), new ArrayList<>());
+    super.studentMap.put(newId, studentData);
+    return studentData;
   }
 
   @Override
-  public StudentWithId update(int studentId, StudentBase student) throws NotFoundException {
+  public StudentData update(int studentId, StudentData student) throws NotFoundException {
     if (!super.studentMap.containsKey(studentId)) {
       throw new NotFoundException("unable to find student");
     }
-    StudentWithId studentWithId = super.studentMap.get(studentId);
-    studentWithId.setFirstName(student.getFirstName());
-    studentWithId.setLastName(student.getLastName());
-    return studentWithId;
+    StudentData studentData = super.studentMap.get(studentId);
+    studentData.setFirstName(student.getFirstName());
+    studentData.setLastName(student.getLastName());
+    return studentData;
   }
 
   @Override
@@ -47,7 +46,7 @@ public class StudentRepository extends MockDataStorage implements IStudentReposi
   }
 
   @Override
-  public List<StudentWithId> getAllSearch(String firstName, String lastName) {
+  public List<StudentData> getAllSearch(String firstName, String lastName) {
     return super.studentMap.values()
         .stream()
         .filter((student) ->
