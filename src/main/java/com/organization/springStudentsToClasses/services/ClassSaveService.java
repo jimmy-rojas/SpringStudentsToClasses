@@ -1,8 +1,8 @@
 package com.organization.springStudentsToClasses.services;
 
+import com.organization.springStudentsToClasses.exceptions.InvalidOperationException;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
-import com.organization.springStudentsToClasses.models.ClassBase;
-import com.organization.springStudentsToClasses.models.ClassWithId;
+import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.storage.IClassRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,28 +22,43 @@ public class ClassSaveService implements IClassRepository {
   }
 
   @Override
-  public List<ClassWithId> getAll() {
+  public List<ClassData> getAll() {
     return repository.getAll();
   }
 
   @Override
-  public ClassWithId save(ClassBase classBase) {
+  public ClassData getById(int id) throws NotFoundException {
+    return repository.getById(id);
+  }
+
+  @Override
+  public ClassData save(ClassData classBase) {
     return repository.save(classBase);
   }
 
   @Override
-  public ClassWithId update(int id, ClassBase classBase)
+  public ClassData update(ClassData classBase)
       throws NotFoundException {
-    return repository.update(id, classBase);
+    ClassData classData = getById(classBase.getId());
+    classData.setCode(classBase.getCode());
+    classData.setTitle(classBase.getTitle());
+    classData.setDescription(classBase.getDescription());
+    return repository.update(classData);
   }
 
   @Override
-  public void delete(int id) throws NotFoundException {
-    repository.delete(id);
+  public void delete(int id)
+      throws NotFoundException, InvalidOperationException {
+    ClassData classData = getById(id);
+    if (classData.getStudents().isEmpty()) {
+      repository.delete(id);
+    } else {
+      throw new InvalidOperationException("Unable to delete class with assigned students");
+    }
   }
 
   @Override
-  public List<ClassWithId> getAllSearch(String code, String title, String description) {
+  public List<ClassData> getAllSearch(String code, String title, String description) {
     return repository.getAllSearch(code, title, description);
   }
 }
