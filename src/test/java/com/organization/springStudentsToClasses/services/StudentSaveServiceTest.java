@@ -3,6 +3,7 @@ package com.organization.springStudentsToClasses.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import com.organization.springStudentsToClasses.exceptions.InvalidOperationException;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
 import com.organization.springStudentsToClasses.models.StudentData;
 import com.organization.springStudentsToClasses.storage.IStudentRepository;
@@ -35,7 +36,7 @@ public class StudentSaveServiceTest {
 
       @Override
       public StudentData getById(int id) throws NotFoundException {
-        return null;
+        return new StudentData(id, "firstName", "lastName", new ArrayList<>());
       }
 
       @Override
@@ -44,15 +45,15 @@ public class StudentSaveServiceTest {
       }
 
       @Override
-      public StudentData update(int id, StudentData student) throws NotFoundException {
-        if (id > 0) {
-          return new StudentData(id, "firstName", "lastName", new ArrayList<>());
+      public StudentData update(StudentData student) throws NotFoundException {
+        if (student.getId() > 0) {
+          return new StudentData(student.getId(), "firstName", "lastName", new ArrayList<>());
         }
         throw new NotFoundException("Not Found");
       }
 
       @Override
-      public void delete(int studentId) throws NotFoundException {
+      public void delete(int studentId) throws NotFoundException, InvalidOperationException {
         if (studentId < 1) {
           throw new NotFoundException("Not Found");
         }
@@ -84,12 +85,13 @@ public class StudentSaveServiceTest {
 
   @Test (expected = NotFoundException.class)
   public void testUpdate_NotFoundException() throws Exception {
-    instance.update(0, studentBase);
+    studentBase.setId(-1);
+    instance.update(studentBase);
   }
 
   @Test
   public void testUpdate() throws Exception {
-    StudentData studentUpdated = instance.update(1, studentBase);
+    StudentData studentUpdated = instance.update(studentBase);
     assertNotNull(studentUpdated);
     assertEquals(1, studentUpdated.getId());
   }

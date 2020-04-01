@@ -39,8 +39,8 @@ public class ClassRepository implements IClassRepository {
   }
 
   @Override
-  public ClassData update(int classId, ClassData classBase) throws NotFoundException {
-    ClassData classData = getById(classId);
+  public ClassData update(ClassData classBase) throws NotFoundException {
+    ClassData classData = getById(classBase.getId());
     classData.setCode(classBase.getCode());
     classData.setTitle(classBase.getTitle());
     classData.setDescription(classBase.getDescription());

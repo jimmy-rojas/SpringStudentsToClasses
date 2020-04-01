@@ -40,9 +40,9 @@ public class StudentRepository implements IStudentRepository {
   }
 
   @Override
-  public StudentData update(int studentId, StudentData student)
+  public StudentData update(StudentData student)
       throws NotFoundException {
-    StudentData studentData = getById(studentId);
+    StudentData studentData = getById(student.getId());
     studentData.setFirstName(student.getFirstName());
     studentData.setLastName(student.getLastName());
     return studentData;

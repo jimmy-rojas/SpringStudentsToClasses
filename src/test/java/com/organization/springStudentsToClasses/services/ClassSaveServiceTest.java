@@ -3,6 +3,7 @@ package com.organization.springStudentsToClasses.services;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.organization.springStudentsToClasses.exceptions.InvalidOperationException;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
 import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.storage.IClassRepository;
@@ -36,7 +37,7 @@ public class ClassSaveServiceTest {
 
       @Override
       public ClassData getById(int id) throws NotFoundException {
-        return null;
+        return new ClassData(id, "code", "title", "description", new ArrayList<>());
       }
 
       @Override
@@ -45,16 +46,16 @@ public class ClassSaveServiceTest {
       }
 
       @Override
-      public ClassData update(int id, ClassData classBase) throws NotFoundException {
-        if (id > 0) {
-          return new ClassData(id, classBase.getCode(), classBase.getTitle(),
+      public ClassData update(ClassData classBase) throws NotFoundException {
+        if (classBase.getId() > 0) {
+          return new ClassData(classBase.getId(), classBase.getCode(), classBase.getTitle(),
               classBase.getDescription(), new ArrayList<>());
         }
         throw new NotFoundException("Not Found");
       }
 
       @Override
-      public void delete(int classId) throws NotFoundException {
+      public void delete(int classId) throws NotFoundException, InvalidOperationException {
         if (classId < 1) {
           throw new NotFoundException("Not Found");
         }
@@ -86,12 +87,13 @@ public class ClassSaveServiceTest {
 
   @Test (expected = NotFoundException.class)
   public void testUpdate_NotFoundException() throws Exception {
-    instance.update(0, classBase);
+    classBase.setId(-1);
+    instance.update(classBase);
   }
 
   @Test
   public void testUpdate() throws Exception {
-    ClassData classUpdated = instance.update(1, classBase);
+    ClassData classUpdated = instance.update(classBase);
     assertNotNull(classUpdated);
     assertEquals(1, classUpdated.getId());
   }

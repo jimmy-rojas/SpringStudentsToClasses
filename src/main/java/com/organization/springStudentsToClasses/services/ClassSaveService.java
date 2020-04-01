@@ -1,5 +1,6 @@
 package com.organization.springStudentsToClasses.services;
 
+import com.organization.springStudentsToClasses.exceptions.InvalidOperationException;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
 import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.storage.IClassRepository;
@@ -36,14 +37,21 @@ public class ClassSaveService implements IClassRepository {
   }
 
   @Override
-  public ClassData update(int id, ClassData classBase)
+  public ClassData update(ClassData classBase)
       throws NotFoundException {
-    return repository.update(id, classBase);
+    ClassData classData = getById(classBase.getId());
+    return repository.update(classBase);
   }
 
   @Override
-  public void delete(int id) throws NotFoundException {
-    repository.delete(id);
+  public void delete(int id)
+      throws NotFoundException, InvalidOperationException {
+    ClassData classData = getById(id);
+    if (classData.getStudents().isEmpty()) {
+      repository.delete(id);
+    } else {
+      throw new InvalidOperationException("Unable to delete class with assigned students");
+    }
   }
 
   @Override
