@@ -14,7 +14,7 @@ public class StudentRepository extends MockDataStorage implements IStudentReposi
 
   @Override
   public List<StudentData> getAll() {
-    return new ArrayList<StudentData>(super.studentMap.values());
+    return new ArrayList<>(super.studentMap.values());
   }
 
   @Override

@@ -34,6 +34,12 @@ public class ClassController {
     return new ResponseEntity(this.service.getAll(), HttpStatus.OK);
   }
 
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{classId}")
+  public ResponseEntity getClassStudents(@PathVariable int classId)
+      throws NotFoundException {
+    return new ResponseEntity(this.service.getById(classId), HttpStatus.OK);
+  }
+
   @RequestMapping(method=POST, value="/")
   public ResponseEntity createClass(@RequestBody ClassData classBase) {
     return new ResponseEntity(this.service.getAll(), HttpStatus.OK);

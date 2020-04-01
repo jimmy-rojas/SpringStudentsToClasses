@@ -34,6 +34,12 @@ public class StudentController {
     return new ResponseEntity(this.service.getAll(), HttpStatus.OK);
   }
 
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{studentId}")
+  public ResponseEntity getStudentClasses(@PathVariable int studentId)
+      throws NotFoundException {
+    return new ResponseEntity(this.service.getById(studentId), HttpStatus.OK);
+  }
+
   @RequestMapping(method=POST, value="/")
   public ResponseEntity createStudent(@RequestBody StudentData studentBase) {
     return new ResponseEntity(this.service.save(studentBase), HttpStatus.OK);
