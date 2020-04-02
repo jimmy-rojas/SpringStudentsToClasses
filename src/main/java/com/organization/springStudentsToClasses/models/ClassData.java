@@ -1,29 +1,20 @@
 package com.organization.springStudentsToClasses.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import java.util.List;
 
-@JsonPropertyOrder({ "id", "code", "title", "description", "students" })
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = "id")
+@JsonPropertyOrder({ "id", "code", "title", "description" })
 public class ClassData {
 
   private int id;
   private String code;
   private String title;
   private String description;
-  private List<StudentData> students;
 
-  public ClassData(int id, String code, String title, String description,
-      List<StudentData> students) {
+  public ClassData(int id, String code, String title, String description) {
     this.id = id;
     this.code = code;
     this.title = title;
     this.description = description;
-    this.students = students;
   }
 
   public int getId() {
@@ -56,14 +47,5 @@ public class ClassData {
 
   public void setDescription(String description) {
     this.description = description;
-  }
-
-  public List<StudentData> getStudents() {
-    return students;
-  }
-
-  public void setStudents(
-      List<StudentData> students) {
-    this.students = students;
   }
 }

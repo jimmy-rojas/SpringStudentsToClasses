@@ -6,6 +6,7 @@ import com.organization.springStudentsToClasses.exceptions.InvalidOperationExcep
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
 import com.organization.springStudentsToClasses.models.StudentData;
 import com.organization.springStudentsToClasses.services.StudentSaveService;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,15 +42,22 @@ public class StudentController {
     return new ResponseEntity(this.service.getById(studentId), HttpStatus.OK);
   }
 
-  @RequestMapping(method=POST, value="/")
-  public ResponseEntity createStudent(@RequestBody StudentData studentBase) {
-    return new ResponseEntity(this.service.save(studentBase), HttpStatus.OK);
+  @RequestMapping(method=POST, value="/{studentId}")
+  public ResponseEntity assignClassesToStudent(@PathVariable int studentId,
+      @RequestBody Set<Integer> classIds) throws NotFoundException {
+    return new ResponseEntity(this.service.assignClassesToStudent(studentId, classIds),
+        HttpStatus.OK);
   }
 
-  @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
-  public ResponseEntity updateStudent(@PathVariable int id, @RequestBody StudentData studentBase)
+  @RequestMapping(method=POST, value="/")
+  public ResponseEntity createStudent(@RequestBody StudentData studentData) {
+    return new ResponseEntity(this.service.save(studentData), HttpStatus.OK);
+  }
+
+  @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/")
+  public ResponseEntity updateStudent(@RequestBody StudentData studentData)
       throws NotFoundException {
-    return new ResponseEntity(this.service.update(studentBase), HttpStatus.OK);
+    return new ResponseEntity(this.service.update(studentData), HttpStatus.OK);
   }
 
   @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")

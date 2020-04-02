@@ -42,14 +42,14 @@ public class ClassController {
   }
 
   @RequestMapping(method=POST, value="/")
-  public ResponseEntity createClass(@RequestBody ClassData classBase) {
-    return new ResponseEntity(this.service.getAll(), HttpStatus.OK);
+  public ResponseEntity createClass(@RequestBody ClassData classData) {
+    return new ResponseEntity(this.service.save(classData), HttpStatus.OK);
   }
 
-  @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
-  public ResponseEntity updateClass(@PathVariable int id, @RequestBody ClassData classBase)
+  @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/")
+  public ResponseEntity updateClass(@RequestBody ClassData classData)
       throws NotFoundException {
-    return new ResponseEntity(this.service.update(classBase), HttpStatus.OK);
+    return new ResponseEntity(this.service.update(classData), HttpStatus.OK);
   }
 
   @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
