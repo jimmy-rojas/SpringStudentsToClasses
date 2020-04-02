@@ -9,6 +9,7 @@ import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.models.FullClassData;
 import com.organization.springStudentsToClasses.storage.IClassRepository;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,12 +23,12 @@ public class ClassSaveServiceTest {
 
   @Before
   public void setUp() {
-    classBase = new FullClassData(1, "code", "title", "description", new ArrayList<>());
+    classBase = new FullClassData(1, "code", "title", "description", new HashSet<>());
     classRepository = new IClassRepository() {
       @Override
       public List<FullClassData> getAllSearch(String code, String title, String description) {
         List<FullClassData> data = new ArrayList<>();
-        data.add(new FullClassData(1, code, title, description, new ArrayList<>()));
+        data.add(new FullClassData(1, code, title, description, new HashSet<>()));
         return data;
       }
 
@@ -38,19 +39,19 @@ public class ClassSaveServiceTest {
 
       @Override
       public FullClassData getById(int id) throws NotFoundException {
-        return new FullClassData(id, "code", "title", "description", new ArrayList<>());
+        return new FullClassData(id, "code", "title", "description", new HashSet<>());
       }
 
       @Override
       public FullClassData save(FullClassData classBase) {
-        return new FullClassData(1, "code", "title", "description", new ArrayList<>());
+        return new FullClassData(1, "code", "title", "description", new HashSet<>());
       }
 
       @Override
       public FullClassData update(FullClassData classBase) throws NotFoundException {
         if (classBase.getId() > 0) {
           return new FullClassData(classBase.getId(), classBase.getCode(), classBase.getTitle(),
-              classBase.getDescription(), new ArrayList<>());
+              classBase.getDescription(), new HashSet<>());
         }
         throw new NotFoundException("Not Found");
       }

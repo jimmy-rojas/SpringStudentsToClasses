@@ -4,11 +4,11 @@ import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.models.FullClassData;
 import com.organization.springStudentsToClasses.models.FullStudentData;
 import com.organization.springStudentsToClasses.models.StudentData;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.PostConstruct;
 import org.springframework.context.annotation.Scope;
@@ -35,7 +35,7 @@ public class MockDataStorage {
       counterStudent.incrementAndGet();
 
       FullStudentData studentClass = new FullStudentData(studentData.getId(),
-          studentData.getFirstName(), studentData.getLastName(), new ArrayList<>());
+          studentData.getFirstName(), studentData.getLastName(), new HashSet<>());
       studentClassMap.put(i, studentClass);
     }
     for (int i=0; i<3; i++) {
@@ -43,7 +43,7 @@ public class MockDataStorage {
       classMap.put(i, classData);
       counterClass.incrementAndGet();
       int rand = new Random().nextInt(studentMap.size());
-      List<StudentData> studentList = new ArrayList<>();
+      Set<StudentData> studentList = new HashSet<>();
       for (int j=0; j<=rand; j++) {
         studentList.add(studentMap.get(j));
         studentClassMap.get(j).getClasses().add(classData);
@@ -61,4 +61,5 @@ public class MockDataStorage {
   public Map<Integer, FullStudentData> getStudentClassMap() {
     return studentClassMap;
   }
+
 }

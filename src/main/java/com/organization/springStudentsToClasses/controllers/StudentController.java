@@ -6,6 +6,7 @@ import com.organization.springStudentsToClasses.exceptions.InvalidOperationExcep
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
 import com.organization.springStudentsToClasses.models.StudentData;
 import com.organization.springStudentsToClasses.services.StudentSaveService;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +40,13 @@ public class StudentController {
   public ResponseEntity getStudentClasses(@PathVariable int studentId)
       throws NotFoundException {
     return new ResponseEntity(this.service.getById(studentId), HttpStatus.OK);
+  }
+
+  @RequestMapping(method=POST, value="/{studentId}")
+  public ResponseEntity assignClassesToStudent(@PathVariable int studentId,
+      @RequestBody Set<Integer> classIds) throws NotFoundException {
+    return new ResponseEntity(this.service.assignClassesToStudent(studentId, classIds),
+        HttpStatus.OK);
   }
 
   @RequestMapping(method=POST, value="/")

@@ -6,6 +6,7 @@ import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.models.FullClassData;
 import com.organization.springStudentsToClasses.storage.IClassRepository;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class ClassSaveService {
 
   public FullClassData save(ClassData classBase) {
     FullClassData classData = new FullClassData(0, classBase.getCode(), classBase.getTitle(),
-        classBase.getDescription(), new ArrayList<>());
+        classBase.getDescription(), new HashSet<>());
     return repository.save(classData);
   }
 

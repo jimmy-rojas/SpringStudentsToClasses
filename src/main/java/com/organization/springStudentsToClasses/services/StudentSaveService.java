@@ -2,12 +2,17 @@ package com.organization.springStudentsToClasses.services;
 
 import com.organization.springStudentsToClasses.exceptions.InvalidOperationException;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
+import com.organization.springStudentsToClasses.models.ClassData;
 import com.organization.springStudentsToClasses.models.FullClassData;
 import com.organization.springStudentsToClasses.models.FullStudentData;
 import com.organization.springStudentsToClasses.models.StudentData;
+import com.organization.springStudentsToClasses.storage.IClassRepository;
 import com.organization.springStudentsToClasses.storage.IStudentRepository;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +22,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentSaveService {
 
+  Logger logger = LoggerFactory.getLogger(StudentSaveService.class);
+
   private final IStudentRepository repository;
+  private final IClassRepository classRepository;
 
   @Autowired
-  public StudentSaveService(IStudentRepository repository) {
+  public StudentSaveService(IStudentRepository repository, IClassRepository classRepository) {
     this.repository = repository;
+    this.classRepository = classRepository;
   }
 
   public List<FullStudentData> getAll() {
@@ -34,7 +43,7 @@ public class StudentSaveService {
 
   public FullStudentData save(StudentData studentBase) {
     FullStudentData studentData = new FullStudentData(0, studentBase.getFirstName(),
-        studentBase.getLastName(), new ArrayList<>());
+        studentBase.getLastName(), new HashSet<>());
     return repository.save(studentData);
   }
 
@@ -58,5 +67,21 @@ public class StudentSaveService {
 
   public List<FullStudentData> getAllSearch(String firstName, String lastName) {
     return repository.getAllSearch(firstName, lastName);
+  }
+
+  public FullStudentData assignClassesToStudent(int id, Set<Integer> classIds) throws NotFoundException {
+    FullStudentData studentData = getById(id);
+    Set<ClassData> classes = new HashSet<>();
+    classIds.forEach(classId -> {
+      try {
+        FullClassData fullClassData = classRepository.getById(classId);
+        classes.add(new ClassData(fullClassData.getId(), fullClassData.getCode(),
+            fullClassData.getTitle(), fullClassData.getDescription()));
+      } catch (NotFoundException e) {
+        logger.warn("Unable to find class with id: " + classId);
+      }
+    });
+    studentData.setClasses(classes);
+    return repository.update(studentData);
   }
 }
