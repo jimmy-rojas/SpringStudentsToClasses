@@ -1,6 +1,7 @@
 package com.organization.springStudentsToClasses.storage;
 
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
+import com.organization.springStudentsToClasses.models.FullStudentData;
 import com.organization.springStudentsToClasses.models.StudentData;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +18,12 @@ public class StudentRepository implements IStudentRepository {
   private MockDataStorage storage;
 
   @Override
-  public List<StudentData> getAll() {
+  public List<FullStudentData> getAll() {
     return new ArrayList<>(storage.getStudentClassMap().values());
   }
 
   @Override
-  public StudentData getById(int id)
+  public FullStudentData getById(int id)
       throws NotFoundException {
     if (!storage.getStudentClassMap().containsKey(id)) {
       throw new NotFoundException("unable to find student");
@@ -31,7 +32,7 @@ public class StudentRepository implements IStudentRepository {
   }
 
   @Override
-  public StudentData save(StudentData student) {
+  public FullStudentData save(FullStudentData student) {
     int newId = storage.counterStudent.incrementAndGet();
     student.setId(newId);
     storage.getStudentClassMap().put(newId, student);
@@ -39,7 +40,7 @@ public class StudentRepository implements IStudentRepository {
   }
 
   @Override
-  public StudentData update(StudentData student)
+  public FullStudentData update(FullStudentData student)
       throws NotFoundException {
     storage.getStudentClassMap().put(student.getId(), student);
     return student;
@@ -52,7 +53,7 @@ public class StudentRepository implements IStudentRepository {
   }
 
   @Override
-  public List<StudentData> getAllSearch(String firstName, String lastName) {
+  public List<FullStudentData> getAllSearch(String firstName, String lastName) {
     return storage.getStudentClassMap().values()
         .stream()
         .filter((student) ->
