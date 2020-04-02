@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import com.organization.springStudentsToClasses.exceptions.InvalidOperationException;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
+import com.organization.springStudentsToClasses.models.FullStudentData;
 import com.organization.springStudentsToClasses.models.StudentData;
 import com.organization.springStudentsToClasses.storage.IStudentRepository;
 import java.util.ArrayList;
@@ -16,38 +17,38 @@ public class StudentSaveServiceTest {
 
   private StudentSaveService instance;
   private IStudentRepository studentRepository;
-  private StudentData studentBase;
+  private FullStudentData studentBase;
 
   @Before
   public void setUp() {
-    studentBase = new StudentData(1, "firstName", "lastName", new ArrayList<>());
+    studentBase = new FullStudentData(1, "firstName", "lastName", new ArrayList<>());
     studentRepository = new IStudentRepository() {
       @Override
-      public List<StudentData> getAllSearch(String firstName, String lastName) {
-        List<StudentData> data = new ArrayList<>();
-        data.add(new StudentData(1, firstName, lastName, new ArrayList<>()));
+      public List<FullStudentData> getAllSearch(String firstName, String lastName) {
+        List<FullStudentData> data = new ArrayList<>();
+        data.add(new FullStudentData(1, firstName, lastName, new ArrayList<>()));
         return data;
       }
 
       @Override
-      public List<StudentData> getAll() {
+      public List<FullStudentData> getAll() {
         return new ArrayList<>();
       }
 
       @Override
-      public StudentData getById(int id) throws NotFoundException {
-        return new StudentData(id, "firstName", "lastName", new ArrayList<>());
+      public FullStudentData getById(int id) throws NotFoundException {
+        return new FullStudentData(id, "firstName", "lastName", new ArrayList<>());
       }
 
       @Override
-      public StudentData save(StudentData student) {
-        return new StudentData(1, "firstName", "lastName", new ArrayList<>());
+      public FullStudentData save(FullStudentData student) {
+        return new FullStudentData(1, "firstName", "lastName", new ArrayList<>());
       }
 
       @Override
-      public StudentData update(StudentData student) throws NotFoundException {
+      public FullStudentData update(FullStudentData student) throws NotFoundException {
         if (student.getId() > 0) {
-          return new StudentData(student.getId(), "firstName", "lastName", new ArrayList<>());
+          return new FullStudentData(student.getId(), "firstName", "lastName", new ArrayList<>());
         }
         throw new NotFoundException("Not Found");
       }
@@ -64,14 +65,14 @@ public class StudentSaveServiceTest {
 
   @Test
   public void testGetAll() throws Exception {
-    List<StudentData> allStudents = instance.getAll();
+    List<FullStudentData> allStudents = instance.getAll();
     assertNotNull(allStudents);
     assertEquals(0, allStudents.size());
   }
 
   @Test
   public void getAllSearch() throws Exception {
-    List<StudentData> allStudents = instance.getAllSearch("firstName", "lastName");
+    List<FullStudentData> allStudents = instance.getAllSearch("firstName", "lastName");
     assertNotNull(allStudents);
     assertEquals(1, allStudents.size());
   }

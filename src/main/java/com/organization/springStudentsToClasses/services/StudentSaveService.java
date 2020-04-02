@@ -2,8 +2,11 @@ package com.organization.springStudentsToClasses.services;
 
 import com.organization.springStudentsToClasses.exceptions.InvalidOperationException;
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
+import com.organization.springStudentsToClasses.models.FullClassData;
+import com.organization.springStudentsToClasses.models.FullStudentData;
 import com.organization.springStudentsToClasses.models.StudentData;
 import com.organization.springStudentsToClasses.storage.IStudentRepository;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +15,7 @@ import org.springframework.stereotype.Service;
  * StudentSaveService is a service class to manage Students features
  */
 @Service
-public class StudentSaveService implements IStudentRepository {
+public class StudentSaveService {
 
   private final IStudentRepository repository;
 
@@ -21,34 +24,31 @@ public class StudentSaveService implements IStudentRepository {
     this.repository = repository;
   }
 
-  @Override
-  public List<StudentData> getAll() {
+  public List<FullStudentData> getAll() {
     return repository.getAll();
   }
 
-  @Override
-  public StudentData getById(int id) throws NotFoundException {
+  public FullStudentData getById(int id) throws NotFoundException {
     return repository.getById(id);
   }
 
-  @Override
-  public StudentData save(StudentData studentBase) {
-    return repository.save(studentBase);
+  public FullStudentData save(StudentData studentBase) {
+    FullStudentData studentData = new FullStudentData(0, studentBase.getFirstName(),
+        studentBase.getLastName(), new ArrayList<>());
+    return repository.save(studentData);
   }
 
-  @Override
-  public StudentData update(StudentData studentBase)
+  public FullStudentData update(StudentData studentBase)
       throws NotFoundException {
-    StudentData studentData = getById(studentBase.getId());
+    FullStudentData studentData = getById(studentBase.getId());
     studentData.setFirstName(studentBase.getFirstName());
     studentData.setLastName(studentBase.getLastName());
     return repository.update(studentData);
   }
 
-  @Override
   public void delete(int id)
       throws NotFoundException, InvalidOperationException {
-    StudentData studentData = getById(id);
+    FullStudentData studentData = getById(id);
     if (studentData.getClasses().isEmpty()) {
       repository.delete(id);
     } else {
@@ -56,8 +56,7 @@ public class StudentSaveService implements IStudentRepository {
     }
   }
 
-  @Override
-  public List<StudentData> getAllSearch(String firstName, String lastName) {
+  public List<FullStudentData> getAllSearch(String firstName, String lastName) {
     return repository.getAllSearch(firstName, lastName);
   }
 }

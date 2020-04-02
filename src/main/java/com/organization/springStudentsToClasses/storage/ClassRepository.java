@@ -2,6 +2,7 @@ package com.organization.springStudentsToClasses.storage;
 
 import com.organization.springStudentsToClasses.exceptions.NotFoundException;
 import com.organization.springStudentsToClasses.models.ClassData;
+import com.organization.springStudentsToClasses.models.FullClassData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,12 +18,12 @@ public class ClassRepository implements IClassRepository {
   private MockDataStorage storage;
 
   @Override
-  public List<ClassData> getAll() {
-    return new ArrayList<ClassData>(storage.getClassStudentMap().values());
+  public List<FullClassData> getAll() {
+    return new ArrayList<>(storage.getClassStudentMap().values());
   }
 
   @Override
-  public ClassData getById(int id) throws NotFoundException {
+  public FullClassData getById(int id) throws NotFoundException {
     if (!storage.getClassStudentMap().containsKey(id)) {
       throw new NotFoundException("unable to find student");
     }
@@ -30,7 +31,7 @@ public class ClassRepository implements IClassRepository {
   }
 
   @Override
-  public ClassData save(ClassData classBase) {
+  public FullClassData save(FullClassData classBase) {
     int newId = storage.counterClass.incrementAndGet();
     classBase.setId(newId);
     storage.getClassStudentMap().put(newId, classBase);
@@ -38,19 +39,19 @@ public class ClassRepository implements IClassRepository {
   }
 
   @Override
-  public ClassData update(ClassData classBase) throws NotFoundException {
+  public FullClassData update(FullClassData classBase) throws NotFoundException {
     storage.getClassStudentMap().put(classBase.getId(), classBase);
     return classBase;
   }
 
   @Override
   public void delete(int classId) throws NotFoundException {
-    ClassData classData = getById(classId);
+    FullClassData classData = getById(classId);
     storage.getClassStudentMap().remove(classData.getId());
   }
 
   @Override
-  public List<ClassData> getAllSearch(String code, String title, String description) {
+  public List<FullClassData> getAllSearch(String code, String title, String description) {
     return storage.getClassStudentMap().values()
         .stream()
         .filter((classWithId) ->

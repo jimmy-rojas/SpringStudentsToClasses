@@ -42,14 +42,14 @@ public class StudentController {
   }
 
   @RequestMapping(method=POST, value="/")
-  public ResponseEntity createStudent(@RequestBody StudentData studentBase) {
-    return new ResponseEntity(this.service.save(studentBase), HttpStatus.OK);
+  public ResponseEntity createStudent(@RequestBody StudentData studentData) {
+    return new ResponseEntity(this.service.save(studentData), HttpStatus.OK);
   }
 
-  @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
-  public ResponseEntity updateStudent(@PathVariable int id, @RequestBody StudentData studentBase)
+  @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/")
+  public ResponseEntity updateStudent(@RequestBody StudentData studentData)
       throws NotFoundException {
-    return new ResponseEntity(this.service.update(studentBase), HttpStatus.OK);
+    return new ResponseEntity(this.service.update(studentData), HttpStatus.OK);
   }
 
   @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
